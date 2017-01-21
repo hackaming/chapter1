@@ -1,0 +1,17 @@
+设计信息
+表结构：
+id bigint nor null autoincrement
+name varchar default null
+contact varchar default null
+telephone varchar default null
+email varchar default null
+remark text
+
+url:
+get:/customer_list			客户列表界面
+post:/customer_search	查询客户
+get:/customer_show?id={id}进入“查看客户”界面
+get:/customer_create		进入"创建客户"界面
+get:/customer_edit?id={id}	进入“编辑客户”界面
+put:/customer_edit?id={id}	编辑客户
+delete:/customer_delete?id={id}删除客户
