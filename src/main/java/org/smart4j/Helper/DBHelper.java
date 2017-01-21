@@ -13,6 +13,7 @@ import org.apache.commons.dbutils.handlers.BeanListHandler;
 import org.apache.commons.dbutils.handlers.MapListHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.smart4j.util.CollectionUtil;
 import org.smart4j.util.PropsUtil;
 
 public final class DBHelper {
@@ -66,11 +67,10 @@ public final class DBHelper {
 			}
 		}
 	}
-
 	public static <T> List<T> queryEntityList(Class<T> entityClass, String sql, Object... params) {
 		List<T> entityList = null;
 		try {
-			conn = DBHelper.getConnection();
+			conn = getConnection();
 			entityList = QUERY_RUNNER.query(conn, sql, new BeanListHandler<T>(entityClass), params);
 		} catch (SQLException e) {
 			logger.error("SQL query error!");
@@ -80,11 +80,10 @@ public final class DBHelper {
 		}
 		return entityList;
 	}
-	
 	public static <T> T queryEntity(Class<T> entityClass,String sql,Object...params){
-		Connection con = CONNECTION_HOLDER.get();
 		T entity;
 		try{
+			conn = getConnection();
 			entity = QUERY_RUNNER.query(conn, sql,new BeanHandler<T>(entityClass),params);
 		} catch(SQLException e){
 			logger.error("Can't finish the query");
@@ -95,16 +94,49 @@ public final class DBHelper {
 		return entity;
 	}
 	public static List<Map<String,Object>> executeQuery(String sql,Object ... params){
-		Connection conn = CONNECTION_HOLDER.get();
 		List<Map<String,Object>> result;
 		try{
+			conn = getConnection();
 			result = QUERY_RUNNER.query(sql, new MapListHandler(), params);
 		} catch (SQLException e){
 			logger.error("execute query error");
 			throw new RuntimeException();
+		}finally{
+			closeConnection();
 		}
 		return result;
 	}
-	
-	
+	public static int executeUpdate(String sql,Object...params){
+		int rows=0;
+		try {
+			Connection conn = getConnection();
+			rows = QUERY_RUNNER.update(sql,conn,params);
+		}catch (SQLException e){
+			logger.error("Error when executing update");
+			throw new RuntimeException();
+		} finally{
+			closeConnection();
+		}
+		return rows;
+	}
+	public static <T> boolean insertEntity(Class<T>entityClass,Map<String,Object> fieldMap){
+		if (CollectionUtil.isEmpty(fieldMap)){
+			logger.error("Can't not insert entity:FieldMap is null");
+		}
+		String sql = "insert into" + getTableName(entityClass);
+		StringBuilder columns = new StringBuilder("(");
+		StringBuilder values = new StringBuilder(")");
+		for (String fieldName:fieldMap.keySet()){
+			columns.append(fieldName).append(",");
+			values.append("?,");
+		}
+		columns.replace(columns.lastIndexOf(","), columns.length(), ")");
+		values.replace(values.lastIndexOf(","), values.length(), ")");
+		sql += columns+"values "+values;
+		Object[] params = fieldMap.values().toArray();
+		return executeUpdate(sql,params)==1;
+	}
+	public static <T> String getTableName(Class<T>entityClass){
+		return "Customer";
+	}
 }
