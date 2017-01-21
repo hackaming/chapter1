@@ -25,11 +25,20 @@ public class CustomerService {
 	 * 
 	 * @return
 	 */
-	public List<Customer> getCustomerList() {
+	public List<Customer> getCustomer() {
+		String query = "Select * from customer";
+		return DBHelper.queryEntityList(Customer.class,query);
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public List<Customer> getCustomerList1() {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		List<Customer>list = new ArrayList();
+		List<Customer> list = new ArrayList();
 		conn = DBHelper.getConnection();
 		String sql = "select * from customer";
 		try {
@@ -39,7 +48,7 @@ public class CustomerService {
 		}
 		try {
 			rs = pstmt.executeQuery();
-			while (rs.next()){
+			while (rs.next()) {
 				Customer c = new Customer();
 				c.setContact(rs.getString("contact"));
 				c.setId(rs.getLong("id"));
@@ -49,11 +58,11 @@ public class CustomerService {
 				c.setRemark(rs.getString("remark"));
 				list.add(c);
 			}
-			return list;			
+			return list;
 		} catch (SQLException e) {
 			logger.debug("Can't execute the sql");
-		} finally{
-			if (null != rs){
+		} finally {
+			if (null != rs) {
 				try {
 					rs.close();
 				} catch (SQLException e) {
@@ -61,7 +70,7 @@ public class CustomerService {
 					e.printStackTrace();
 				}
 			}
-			if (null != pstmt){
+			if (null != pstmt) {
 				try {
 					pstmt.close();
 				} catch (SQLException e) {
