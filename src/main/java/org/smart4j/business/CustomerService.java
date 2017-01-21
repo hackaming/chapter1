@@ -10,7 +10,7 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.smart4j.Helper.DBHelper;
+import org.smart4j.Helper.DBHelper1;
 import org.smart4j.model.Customer;
 
 /**
@@ -27,7 +27,7 @@ public class CustomerService {
 	 */
 	public List<Customer> getCustomer() {
 		String query = "Select * from customer";
-		return DBHelper.queryEntityList(Customer.class,query);
+		return DBHelper1.queryEntityList(Customer.class,query);
 	}
 
 	/**
@@ -39,7 +39,7 @@ public class CustomerService {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		List<Customer> list = new ArrayList();
-		conn = DBHelper.getConnection();
+		conn = DBHelper1.getConnection();
 		String sql = "select * from customer";
 		try {
 			pstmt = conn.prepareStatement(sql);
@@ -78,7 +78,7 @@ public class CustomerService {
 					e.printStackTrace();
 				}
 			}
-			DBHelper.closeConnection();
+			DBHelper1.closeConnection();
 		}
 		return null;
 	}
@@ -90,7 +90,7 @@ public class CustomerService {
 	 */
 	public Customer getCustomer(long id) {
 		String sql = "select * from Customer where id="+id;
-		return DBHelper.queryEntity(Customer.class, sql);
+		return DBHelper1.queryEntity(Customer.class, sql);
 	}
 
 	/**
@@ -98,7 +98,7 @@ public class CustomerService {
 	 * @param id
 	 */
 	public boolean delCustomer(long id) {
-		return DBHelper.deleteEntity(Customer.class, id);
+		return DBHelper1.deleteEntity(Customer.class, id);
 	}
 
 	/**
@@ -115,11 +115,11 @@ public class CustomerService {
 	 * @param fileMap
 	 */
 	public boolean updateCustomer(long id, Map<String, Object> fieldMap) {
-		return DBHelper.updateEntity(Customer.class, id, fieldMap);
+		return DBHelper1.updateEntity(Customer.class, id, fieldMap);
 	}
 
 	public boolean createCustomer(Map<String,Object> fieldMap) {
-		return DBHelper.insertEntity(Customer.class, fieldMap);
+		return DBHelper1.insertEntity(Customer.class, fieldMap);
 	}
 
 }

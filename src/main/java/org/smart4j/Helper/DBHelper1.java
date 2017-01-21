@@ -18,41 +18,36 @@ import org.slf4j.LoggerFactory;
 import org.smart4j.util.CollectionUtil;
 import org.smart4j.util.PropsUtil;
 
-public final class DBHelper {
-	private static final Logger logger = LoggerFactory.getLogger(DBHelper.class);
-	private static final QueryRunner QUERY_RUNNER;
-	private static final ThreadLocal<Connection> CONNECTION_HOLDER;
+public final class DBHelper1 {
+	private static final String DRIVER;
+	private static final String URL;
+	private static final String USER;
+	private static final String PASSWORD;
+	private static final Logger logger = LoggerFactory.getLogger(DBHelper1.class);
+	private static Connection conn = null;
+	private static final QueryRunner QUERY_RUNNER = new QueryRunner();
+	private static final ThreadLocal<Connection> CONNECTION_HOLDER=new ThreadLocal<Connection>();
 	private static final BasicDataSource Data_Source;
-	private static Connection conn;
 	static {
-		CONNECTION_HOLDER=new ThreadLocal<Connection>();
-		QUERY_RUNNER = new QueryRunner();
-		
 		Properties prop = PropsUtil.loadProperties("DB.properties");
-		String DRIVER = prop.getProperty("jdbc.driver");
-		String URL = prop.getProperty("jdbc.url");
-		String USER = prop.getProperty("jdbc.user");
-		String PASSWORD = prop.getProperty("jdbc.password");
-		Data_Source= new BasicDataSource();
-		Data_Source.setDriverClassName(DRIVER);
-		Data_Source.setUrl(URL);
-		Data_Source.setUsername(USER);
-		Data_Source.setPassword(PASSWORD);
-				
-		/*try {
+		DRIVER = prop.getProperty("jdbc.driver");
+		URL = prop.getProperty("jdbc.url");
+		USER = prop.getProperty("jdbc.user");
+		PASSWORD = prop.getProperty("jdbc.password");
+		try {
 			Class.forName(DRIVER);
 		} catch (ClassNotFoundException e) {
 			logger.error("JDBC Driver initializing failed");
-		}*/
+		}
 	}
 
 	public static Connection getConnection() {
 		Connection conn = CONNECTION_HOLDER.get();
 		if (null == conn){
 			try {
-				conn = Data_Source.getConnection();
+				conn = DriverManager.getConnection(URL,USER,PASSWORD);
 			} catch (SQLException e) {
-				logger.error("Can't get connection " );
+				logger.error("Can't get connection with " + URL);
 				throw new RuntimeException();
 			}finally{
 				CONNECTION_HOLDER.set(conn);				
@@ -62,8 +57,7 @@ public final class DBHelper {
 	}
 
 	public static void closeConnection() {
-		//no need to close connection any more as we use the DBCP connection Pool
-/*		conn = CONNECTION_HOLDER.get();
+		conn = CONNECTION_HOLDER.get();
 		if (null != conn) {
 			try {
 				conn.close();
@@ -73,7 +67,7 @@ public final class DBHelper {
 			} finally{
 				CONNECTION_HOLDER.remove();
 			}
-		}*/
+		}
 	}
 	public static <T> List<T> queryEntityList(Class<T> entityClass, String sql, Object... params) {
 		List<T> entityList = null;

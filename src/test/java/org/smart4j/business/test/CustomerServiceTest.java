@@ -30,7 +30,7 @@ public class CustomerServiceTest {
 	
 	@Test
 	public void getCustomerListTest(){
-		List<Customer> list = customerService.getCustomerList();
+		List<Customer> list = customerService.getCustomer();
 		Assert.assertEquals(2, list.size());
 	}
 	@Test
@@ -42,7 +42,12 @@ public class CustomerServiceTest {
 		c.setRemark("");
 		c.setTelephone("");
 		c.setId(3);
-		boolean result = customerService.createCustomer(c);
+		Map <String,Object> fieldMap= new HashMap<String,Object>();
+		fieldMap.put("name", "name");
+		fieldMap.put("Email", "dd@dd.com");
+		
+		
+		boolean result = customerService.createCustomer(fieldMap);
 		Assert.assertEquals(true, result);
 	}
 	@Test
