@@ -3,6 +3,7 @@ package org.smart4j.Helper;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -137,6 +138,27 @@ public final class DBHelper {
 		return executeUpdate(sql,params)==1;
 	}
 	public static <T> String getTableName(Class<T>entityClass){
-		return "Customer";
+		return entityClass.getSimpleName();
+	}
+	public static <T> boolean updateEntity(Class<T> entityClass,long id,Map<String,Object>fieldMap){
+		if (CollectionUtil.isEmpty(fieldMap)){
+			logger.error("Can't update entity:field is empty");
+			return false;
+		}
+		String sql = "update "+ getTableName(entityClass) + "SET ";
+		StringBuilder columns = new StringBuilder();
+		for (String fieldName:fieldMap.keySet()){
+			columns.append(fieldName).append("=?, ");
+		}
+		sql += columns.substring(0,columns.lastIndexOf(", "))+" where id =?";
+		List<Object> paramList=new ArrayList<Object>();
+		paramList.addAll(fieldMap.values());
+		paramList.add(id);
+		Object[] params = paramList.toArray();
+		return executeUpdate(sql,params)==1;		
+	}
+	public static <T> boolean deleteEntity(Class<T> entityClass,long id){
+		String sql = "delete from "+getTableName(entityClass)+" where id=?";
+		return executeUpdate(sql,id)==1;
 	}
 }
