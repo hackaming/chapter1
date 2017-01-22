@@ -25,6 +25,7 @@ public final class DBHelper {
 	private static final BasicDataSource Data_Source;
 	private static Connection conn;
 	static {
+		logger.info("DBHelper initialized!");
 		CONNECTION_HOLDER=new ThreadLocal<Connection>();
 		QUERY_RUNNER = new QueryRunner();
 		

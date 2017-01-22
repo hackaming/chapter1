@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet("/customer_create")
+@WebServlet("/customercreate")
 public class CustomerCreateServlet extends HttpServlet{
 
 	@Override
