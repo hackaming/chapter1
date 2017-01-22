@@ -42,7 +42,7 @@ public class CustomerServiceTest {
 	
 	@Test
 	public void getCustomerListTest(){
-		List<Customer> list = customerService.getCustomer();
+		List<Customer> list = customerService.getCustomerList();
 		Assert.assertEquals(2, list.size());
 	}
 	@Test
