@@ -27,7 +27,7 @@ public final class DBHelper1 {
 	private static Connection conn = null;
 	private static final QueryRunner QUERY_RUNNER = new QueryRunner();
 	private static final ThreadLocal<Connection> CONNECTION_HOLDER=new ThreadLocal<Connection>();
-	private static final BasicDataSource Data_Source;
+	private static final BasicDataSource Data_Source=null;
 	static {
 		Properties prop = PropsUtil.loadProperties("DB.properties");
 		DRIVER = prop.getProperty("jdbc.driver");
