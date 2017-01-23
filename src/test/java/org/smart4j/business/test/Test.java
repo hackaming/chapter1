@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import org.smart4j.business.CustomerService;
+import org.smart4j.model.Customer;
 
 public class Test {
 	public static void main(String[] argv) throws IOException{
