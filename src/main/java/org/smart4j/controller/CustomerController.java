@@ -1,4 +1,4 @@
-package org.smart4j.controller;
+/*package org.smart4j.controller;
 
 import org.smart4j.business.CustomerService;
 
@@ -52,3 +52,4 @@ public class CustomerController {
 		return new Data(result);
 	}
 }
+*/
