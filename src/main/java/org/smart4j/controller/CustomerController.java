@@ -6,6 +6,7 @@ import org.smart4j.business.CustomerService;
 public class CustomerController {
 	@Inject
 	private CustomerService customerService;
+	private int testIntforGitChange;
 	
 	@Action("get:/customer")
 	public View index(Param param){
