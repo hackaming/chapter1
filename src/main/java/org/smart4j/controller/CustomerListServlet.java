@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.smart4j.business.CustomerService;
 import org.smart4j.model.Customer;
 
-@WebServlet("/customer_list")
+@WebServlet("/customerlist")
 public class CustomerListServlet extends HttpServlet{
 	private CustomerService cs;
 	@Override
