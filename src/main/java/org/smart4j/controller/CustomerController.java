@@ -1,4 +1,4 @@
-package org.smart4j.controller;
+/*package org.smart4j.controller;
 
 import org.smart4j.business.CustomerService;
 
@@ -6,6 +6,7 @@ import org.smart4j.business.CustomerService;
 public class CustomerController {
 	@Inject
 	private CustomerService customerService;
+	private int testIntforGitChange;
 	
 	@Action("get:/customer")
 	public View index(Param param){
@@ -51,3 +52,4 @@ public class CustomerController {
 		return new Data(result);
 	}
 }
+*/
